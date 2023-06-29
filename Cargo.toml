@@ -1,11 +1,11 @@
 [package]
 name = "tera-plaintext-filters"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
-authors = ["Micha Glave <coding@migmedia.de"]
-license = "Apache-2.0 OR MIT AND Zlib"
+authors = [ "Micha Glave <coding@migmedia.de" ]
+license = "Apache-2.0 OR MIT"
 categories = []
-keywords = ["tera", "template"]
+keywords = [ "tera", "template" ]
 homepage = "https://github.com/migmedia/tera-plaintext-filters"
 description = """
 Filters for the Tera engine, useful for plaintext file generation.

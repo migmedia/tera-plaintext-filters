@@ -115,7 +115,7 @@ fn eval_value<S: BuildHasher>(
     args: &HashMap<String, Value, S>,
     filter_name: &'static str,
 ) -> tera::Result<(String, usize)> {
-    if value.is_object() || value.is_array() || value.is_null() {
+    if value.is_object() || value.is_array() {
         return Err(Error::msg(format!(
             "Filter `{filter_name}` was called on an incorrect value: got `{value}` \
                         but expected a text or number",
@@ -132,8 +132,10 @@ fn eval_value<S: BuildHasher>(
         }
     };
     Ok(match value.as_str() {
-        None => (value.to_string(), len),
         Some(str) => (str.to_string(), len),
+        // null => ""
+        None if value.is_null() => (String::new(), len),
+        None => (value.to_string(), len),
     })
 }
 
@@ -169,7 +171,9 @@ mod should {
         let v = json!(12.23);
         let r = center(&v, &hm).unwrap();
         assert_eq!("       12.23        ", r.as_str().unwrap());
+        assert_eq!("                    ", center(&json!(null), &hm).unwrap());
 
+        assert!(center(&json!({ "a": "notice", "b": 124.0 }), &hm).is_err());
         assert!(center(&json!(["notice", "the", "trailing", "comma -->",]), &hm).is_err());
     }
 }
